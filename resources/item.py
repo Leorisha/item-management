@@ -27,7 +27,8 @@ class Item(Resource):
         return {'message': 'Item not found'}, 404
 
     def post(self, name):
-        if ItemModel.find_by_name(name):
+        item = ItemModel.find_by_name(name)
+        if item:
             return {'message': "An item with name '{}' already exists.".format(name)}
 
         data = Item.parser.parse_args()
@@ -43,7 +44,7 @@ class Item(Resource):
 
     @jwt_required()
     def delete(self, name):
-        item = Item.find_by_name(name)
+        item = ItemModel.find_by_name(name)
         if item:
             item.delete()
 
